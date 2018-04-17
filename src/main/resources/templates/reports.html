@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Reports</title>
+  <link rel="stylesheet" href="../static/bower_components/bootstrap/dist/css/bootstrap.min.css"
+        th:href="@{/bower_components/bootstrap/dist/css/bootstrap.min.css}">
+  <link rel="stylesheet" href="../static/bower_components/bootstrap/dist/css/bootstrap-theme.min.css"
+        th:href="@{/bower_components/bootstrap/dist/css/bootstrap-theme.min.css}">
+
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" th:href="@{/}">UReport Demo</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container" style="padding: 40px 15px">
+
+  <div class="page-header">
+    <h1>Reports</h1>
+  </div>
+  <div class="text-right">
+    <input type="button" class="btn btn-success" onclick="window.open('/ureport/designer')" value="Create New Report">
+  </div>
+
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Report Name</th>
+        <th>Updated Time</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <!--/*@thymesVar id="report" type="com.bstek.ureport.provider.report.ReportFile"*/-->
+      <!--/*@thymesVar id="reports" type="java.util.List"*/-->
+      <tr th:each="report, iter : ${reports}">
+        <td>[[${iter.count}]]</td>
+        <td>[[${report.name}]]</td>
+        <td th:text="${#dates.format(report.updateDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        <td class="text-right">
+          <!--/ureport/preview?_u=file:A.ureport.xml-->
+          <input type="button" value="Preview" class="btn btn-info"
+                 th:onclick="@{'window.open(\'/ureport/preview?_u=' + ${prefix} + ${report.name} + '\')'}">
+          <!--/ureport/designer?_u=file:h2_users.ureport.xml-->
+          <input type="button" value="Design" class="btn btn-warning"
+                 th:onclick="@{'window.open(\'/ureport/designer?_u=' + ${prefix} + ${report.name} + '\')'}">
+          <input type="button" value="Delete" class="btn btn-danger"
+                 th:onclick="@{'deleteReport(\'' + ${report.name} + '\')'}">
+        </td>
+      </tr>
+      </tbody>
+    </table>
+</div>
+
+<script src="../static/bower_components/jquery/dist/jquery.min.js"
+        th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
+
+<script th:inline="javascript">
+    function deleteReport(id) {
+        if (!confirm("Delete?")) {
+            return;
+        }
+        $.ajax({
+            url: "/reports/[(${prefix})]" + id,
+            type: "DELETE",
+//            dataType : "text",
+            success: function () {
+                alert("Deleted!");
+                location.reload();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert(thrownError);
+            }
+        })
+    }
+</script>
+
+</body>
+</html>
