@@ -32,7 +32,7 @@ mvn package & cd target & java -jar ureport-demo-1.0.0.jar
 ## 系统截图
 
 首页
-<img src="docs/homepage.png" style="width: 1024px">
+<img src="docs/report_list.png" style="width: 1024px">
 
 样例报表预览
 <img src="docs/sample_preview.png" style="width: 480px">
