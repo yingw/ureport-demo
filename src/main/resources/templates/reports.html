@@ -3,10 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Reports</title>
-  <link rel="stylesheet" href="../static/bower_components/bootstrap/dist/css/bootstrap.min.css"
-        th:href="@{/bower_components/bootstrap/dist/css/bootstrap.min.css}">
-  <link rel="stylesheet" href="../static/bower_components/bootstrap/dist/css/bootstrap-theme.min.css"
-        th:href="@{/bower_components/bootstrap/dist/css/bootstrap-theme.min.css}">
+  <link rel="stylesheet" href="../static/vendor/bootstrap/css/bootstrap.min.css"
+        th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
+  <link rel="stylesheet" href="../static/vendor/bootstrap/css/bootstrap-theme.min.css"
+        th:href="@{/vendor/bootstrap/css/bootstrap-theme.min.css}">
+  <!--  <link rel="stylesheet" href="../static/vendor/flat-ui/css/flat-ui.min.css"
+          th:href="@{/vendor/flat-ui/css/flat-ui.min.css}">-->
+  <link rel="stylesheet" href="../static/vendor/datatables.net-bs/css/dataTables.bootstrap.min.css"
+        th:href="@{/vendor/datatables.net-bs/css/dataTables.bootstrap.min.css}">
 
 </head>
 <body>
@@ -24,63 +28,80 @@
   <div class="page-header">
     <h1>Reports</h1>
   </div>
-  <div class="text-right">
-    <input type="button" class="btn btn-success" th:onclick="@{'window.open(\'/ureport/designer\')'}" value="Create New Report">
-  </div>
 
-
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th>#</th>
-        <th>Report Name</th>
-        <th>Updated Time</th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-      <!--/*@thymesVar id="report" type="com.bstek.ureport.provider.report.ReportFile"*/-->
-      <!--/*@thymesVar id="reports" type="java.util.List"*/-->
-      <tr th:each="report, iter : ${reports}">
-        <td>[[${iter.count}]]</td>
-        <td>[[${report.name}]]</td>
-        <td th:text="${#dates.format(report.updateDate, 'yyyy-MM-dd HH:mm:ss')}">2018-04-18 00:00:00</td>
-        <td class="text-right">
+  <table class="table table-striped" id="report-table">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Report Name</th>
+      <th>Updated Time</th>
+      <th data-sortable="false"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--/*@thymesVar id="report" type="com.bstek.ureport.provider.report.ReportFile"*/-->
+    <!--/*@thymesVar id="reports" type="java.util.List"*/-->
+    <tr th:each="report, iter : ${reports}">
+      <td>[[${iter.count}]]</td>
+      <td>[[${report.name}]]</td>
+      <td th:text="${#dates.format(report.updateDate, 'yyyy-MM-dd HH:mm:ss')}">2018-04-18 00:00:00</td>
+      <td class="text-right">
+        <div class="btn-group" role="group">
           <!--/ureport/preview?_u=file:A.ureport.xml-->
-          <input type="button" value="Preview" class="btn btn-info"
+          <input type="button" value="Preview" class="btn btn-sm btn-info"
                  th:onclick="@{'window.open(\'/ureport/preview?_u=' + ${prefix} + ${report.name} + '\')'}">
           <!--/ureport/designer?_u=file:h2_users.ureport.xml-->
-          <input type="button" value="Design" class="btn btn-warning"
+          <input type="button" value="Design" class="btn btn-sm btn-warning"
                  th:onclick="@{'window.open(\'/ureport/designer?_u=' + ${prefix} + ${report.name} + '\')'}">
-          <input type="button" value="Delete" class="btn btn-danger"
+          <input type="button" value="Delete" class="btn btn-sm btn-danger"
                  th:onclick="@{'deleteReport(\'' + ${report.name} + '\')'}">
-        </td>
-      </tr>
-      </tbody>
-    </table>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+
+  <input type="button" class="btn btn-embossed btn-success" th:onclick="@{'window.open(\'/ureport/designer\')'}"
+         value="Create New Report">
+
 </div>
 
-<script src="../static/bower_components/jquery/dist/jquery.min.js"
-        th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
+<script src="../static/vendor/jquery/jquery.min.js"
+        th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<!--<script src="../static/vendor/flat-ui/js/flat-ui.min.js"></script>-->
+<script src="../static/vendor/datatables.net/js/jquery.dataTables.min.js"
+        th:src="@{/vendor/datatables.net/js/jquery.dataTables.min.js}"></script>
+<script src="../static/vendor/datatables.net-bs/js/dataTables.bootstrap.min.js"
+        th:src="@{/vendor/datatables.net-bs/js/dataTables.bootstrap.min.js}"></script>
+
 
 <script th:inline="javascript">
-    function deleteReport(id) {
-        if (!confirm("Delete?")) {
-            return;
-        }
-        $.ajax({
-            url: "/reports/[(${prefix})]" + id,
-            type: "DELETE",
-            success: function () {
-                alert("Deleted!");
-                location.reload();
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-                alert(thrownError);
-            }
-        })
-    }
+  $(document).ready(function () {
+      $('#report-table').dataTable({
+          "language": {
+              "url": /*[[@{'/vendor/datatables-i18n/i18n/zh-CN.json'}]]*/ "../static/vendor/datatables-i18n/i18n/zh-CN.json"
+          }
+      })
+  });
+
+  function deleteReport(id) {
+      if (!confirm("Delete?")) {
+          return;
+      }
+      $.ajax({
+          url: "/reports/[(${prefix})]" + id,
+          type: "DELETE",
+          success: function () {
+              alert("Deleted!");
+              location.reload();
+          },
+          error: function (xhr, ajaxOptions, thrownError) {
+              alert(xhr.status);
+              alert(thrownError);
+          }
+      })
+  }
 </script>
 
 </body>
