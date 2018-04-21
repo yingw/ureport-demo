@@ -31,72 +31,152 @@
     <h1><i class="fa fa-bar-chart"></i> Reports </h1>
   </div>
 
-  <table class="table table-striped" id="report-table">
-    <thead>
-    <tr>
-      <th>#</th>
-      <th>Report Name</th>
-      <th>Updated Time</th>
-      <th data-sortable="false"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <!--/*@thymesVar id="report" type="com.bstek.ureport.provider.report.ReportFile"*/-->
-    <!--/*@thymesVar id="reports" type="java.util.List"*/-->
-    <tr th:each="report, iter : ${reports}">
-      <td>[[${iter.count}]]</td>
-      <td>[[${report.name}]]</td>
-      <td th:text="${#dates.format(report.updateDate, 'yyyy-MM-dd HH:mm:ss')}">2018-04-18 00:00:00</td>
-      <td class="text-right">
-        <div class="btn-group" role="group">
-          <!--/ureport/preview?_u=file:A.ureport.xml-->
-          <div class="btn-group">
-            <button title="Preview" value="Preview" class="btn btn-sm btn-info"
-                   th:onclick="@{'window.open(\'/ureport/preview?_u=' + ${prefix} + ${report.name} + '\')'}">
-              <i class="fa fa-search-plus"></i> Preview
-            </button>
-          </div>
-          <div class="btn-group">
-            <!--/ureport/designer?_u=file:h2_users.ureport.xml-->
-            <button title="Design" type="button" class="btn btn-sm btn-warning"
-                   th:onclick="@{'window.open(\'/ureport/designer?_u=' + ${prefix} + ${report.name} + '\')'}">
-              <i class="fa fa-edit"></i> Design
-            </button>
-          </div>
-          <div class="btn-group">
-            <button title="Delete" type="button" value="Delete" class="btn btn-sm btn-danger"
-                   th:onclick="@{'deleteReport(\'' + ${report.name} + '\')'}">
-              <i class="fa fa-trash"></i> Delete
-            </button>
+  <ul id="myTabs" class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">File</a></li>
+    <li role="presentation" class=""><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Database</a></li>
+  </ul>
 
-          </div>
+  <div id="myTabContent" class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home" aria-labelledby="home-tab">
+      <br>
+      <table class="table table-striped" id="report-table">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Report Name</th>
+          <th>Updated Time</th>
+          <th data-sortable="false"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--/*@thymesVar id="report" type="com.bstek.ureport.provider.report.ReportFile"*/-->
+        <!--/*@thymesVar id="reports" type="java.util.List"*/-->
+        <tr th:each="report, iter : ${reports}">
+          <td>[[${iter.count}]]</td>
+          <td>[[${report.name}]]</td>
+          <td th:text="${#dates.format(report.updateDate, 'yyyy-MM-dd HH:mm:ss')}">2018-04-18 00:00:00</td>
+          <td class="text-right">
+            <div class="btn-group" role="group">
+              <!--/ureport/preview?_u=file:A.ureport.xml-->
+              <div class="btn-group">
+                <button title="Preview" value="Preview" class="btn btn-sm btn-info"
+                        th:onclick="@{'window.open(\'/ureport/preview?_u=' + ${prefix} + ${report.name} + '\')'}">
+                  <i class="fa fa-search-plus"></i> Preview
+                </button>
+              </div>
+              <div class="btn-group">
+                <!--/ureport/designer?_u=file:h2_users.ureport.xml-->
+                <button title="Design" type="button" class="btn btn-sm btn-warning"
+                        th:onclick="@{'window.open(\'/ureport/designer?_u=' + ${prefix} + ${report.name} + '\')'}">
+                  <i class="fa fa-edit"></i> Design
+                </button>
+              </div>
+              <div class="btn-group">
+                <button title="Delete" type="button" value="Delete" class="btn btn-sm btn-danger"
+                        th:onclick="@{'deleteReport(\'' + ${prefix} + ${report.name} + '\')'}">
+                  <i class="fa fa-trash"></i> Delete
+                </button>
 
-          <div class="btn-group" role="group">
-            <button title="Export" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-download"></i> Export
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a href="#" th:href="@{'/ureport/pdf/show?_u=' + ${prefix} + ${report.name}}" target="_blank">
-                <i class="fa fa-print"></i> Print</a></li>
-              <li><a href="#" th:href="@{'/ureport/pdf?_u=' + ${prefix} + ${report.name}}" target="_blank">
-                <i class="fa fa-file-pdf-o"></i> PDF</a></li>
-              <li><a href="#" th:href="@{'/ureport/excel?_u=' + ${prefix} + ${report.name}}" target="_blank">
-                <i class="fa fa-file-excel-o"></i> Excel</a></li>
-              <li><a href="#" th:href="@{'/ureport/word?_u=' + ${prefix} + ${report.name}}" target="_blank">
-                <i class="fa fa-file-word-o"></i> Word</a></li>
-            </ul>
-          </div>
-          <!--http://host[:port][/context-path]/ureport/pdf/show?_u=报表名称-->
-          <!--http://host[:port][/context-path]/ureport/pdf?_u=报表名称-->
-          <!--http://host[:port][/context-path]/ureport/word?_u=报表名称-->
-          <!--http://host[:port][/context-path]/ureport/excel?_u=报表名称-->
-        </div>
+              </div>
 
-      </td>
-    </tr>
-    </tbody>
-  </table>
+              <div class="btn-group" role="group">
+                <button title="Export" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-download"></i> Export
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="#" th:href="@{'/ureport/pdf/show?_u=' + ${prefix} + ${report.name}}" target="_blank">
+                    <i class="fa fa-print"></i> Print</a></li>
+                  <li><a href="#" th:href="@{'/ureport/pdf?_u=' + ${prefix} + ${report.name}}" target="_blank">
+                    <i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                  <li><a href="#" th:href="@{'/ureport/excel?_u=' + ${prefix} + ${report.name}}" target="_blank">
+                    <i class="fa fa-file-excel-o"></i> Excel</a></li>
+                  <li><a href="#" th:href="@{'/ureport/word?_u=' + ${prefix} + ${report.name}}" target="_blank">
+                    <i class="fa fa-file-word-o"></i> Word</a></li>
+                </ul>
+              </div>
+              <!--http://host[:port][/context-path]/ureport/pdf/show?_u=报表名称-->
+              <!--http://host[:port][/context-path]/ureport/pdf?_u=报表名称-->
+              <!--http://host[:port][/context-path]/ureport/word?_u=报表名称-->
+              <!--http://host[:port][/context-path]/ureport/excel?_u=报表名称-->
+            </div>
+
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="profile" aria-labelledby="profile-tab">
+      <br>
+      <table class="table table-striped" id="report-table2">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Report Name</th>
+          <th>Updated Time</th>
+          <th data-sortable="false"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--/*@thymesVar id="report" type="com.bstek.ureport.provider.report.ReportFile"*/-->
+        <!--/*@thymesVar id="dbReports" type="java.util.List"*/-->
+        <tr th:each="report, iter : ${dbReports}">
+          <td>[[${iter.count}]]</td>
+          <td>[[${report.name}]]</td>
+          <td th:text="${#dates.format(report.updateDate, 'yyyy-MM-dd HH:mm:ss')}">2018-04-18 00:00:00</td>
+          <td class="text-right">
+            <div class="btn-group" role="group">
+              <!--/ureport/preview?_u=file:A.ureport.xml-->
+              <div class="btn-group">
+                <button title="Preview" value="Preview" class="btn btn-sm btn-info"
+                        th:onclick="@{'window.open(\'/ureport/preview?_u=' + ${dbPrefix} + ${report.name} + '\')'}">
+                  <i class="fa fa-search-plus"></i> Preview
+                </button>
+              </div>
+              <div class="btn-group">
+                <!--/ureport/designer?_u=file:h2_users.ureport.xml-->
+                <button title="Design" type="button" class="btn btn-sm btn-warning"
+                        th:onclick="@{'window.open(\'/ureport/designer?_u=' + ${dbPrefix} + ${report.name} + '\')'}">
+                  <i class="fa fa-edit"></i> Design
+                </button>
+              </div>
+              <div class="btn-group">
+                <button title="Delete" type="button" value="Delete" class="btn btn-sm btn-danger"
+                        th:onclick="@{'deleteReport(\'' + ${dbPrefix} + ${report.name} + '\')'}">
+                  <i class="fa fa-trash"></i> Delete
+                </button>
+
+              </div>
+
+              <div class="btn-group" role="group">
+                <button title="Export" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-download"></i> Export
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="#" th:href="@{'/ureport/pdf/show?_u=' + ${dbPrefix} + ${report.name}}" target="_blank">
+                    <i class="fa fa-print"></i> Print</a></li>
+                  <li><a href="#" th:href="@{'/ureport/pdf?_u=' + ${dbPrefix} + ${report.name}}" target="_blank">
+                    <i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                  <li><a href="#" th:href="@{'/ureport/excel?_u=' + ${dbPrefix} + ${report.name}}" target="_blank">
+                    <i class="fa fa-file-excel-o"></i> Excel</a></li>
+                  <li><a href="#" th:href="@{'/ureport/word?_u=' + ${dbPrefix} + ${report.name}}" target="_blank">
+                    <i class="fa fa-file-word-o"></i> Word</a></li>
+                </ul>
+              </div>
+              <!--http://host[:port][/context-path]/ureport/pdf/show?_u=报表名称-->
+              <!--http://host[:port][/context-path]/ureport/pdf?_u=报表名称-->
+              <!--http://host[:port][/context-path]/ureport/word?_u=报表名称-->
+              <!--http://host[:port][/context-path]/ureport/excel?_u=报表名称-->
+            </div>
+
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <div class="modal-footer">
     <button type="button" class="btn btn-embossed btn-success" th:onclick="@{'window.open(\'/ureport/designer\')'}">
       <i class="fa fa-plus"></i> Create New Report
@@ -121,7 +201,12 @@
           "language": {
               "url": /*[[@{'/vendor/datatables-i18n/i18n/zh-CN.json'}]]*/ "../static/vendor/datatables-i18n/i18n/zh-CN.json"
           }
-      })
+      });
+      $('#report-table2').dataTable({
+          "language": {
+              "url": /*[[@{'/vendor/datatables-i18n/i18n/zh-CN.json'}]]*/ "../static/vendor/datatables-i18n/i18n/zh-CN.json"
+          }
+      });
   });
 
   function deleteReport(id) {
@@ -129,7 +214,7 @@
           return;
       }
       $.ajax({
-          url: "/reports/[(${prefix})]" + id,
+          url: "/reports/" + id,
           type: "DELETE",
           success: function () {
               alert("Deleted!");
