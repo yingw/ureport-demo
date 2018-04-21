@@ -7,12 +7,10 @@
         th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
   <link rel="stylesheet" href="../static/vendor/bootstrap/css/bootstrap-theme.min.css"
         th:href="@{/vendor/bootstrap/css/bootstrap-theme.min.css}">
-  <!--  <link rel="stylesheet" href="../static/vendor/flat-ui/css/flat-ui.min.css"
-          th:href="@{/vendor/flat-ui/css/flat-ui.min.css}">-->
   <link rel="stylesheet" href="../static/vendor/datatables.net-bs/css/dataTables.bootstrap.min.css"
         th:href="@{/vendor/datatables.net-bs/css/dataTables.bootstrap.min.css}">
-  <link rel="stylesheet" href="../static/vendor/fontawesome/css/fontawesome-all.min.css">
-<link rel="stylesheet" href="../static/vendor/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/vendor/font-awesome/css/font-awesome.min.css"
+      th:href="@{/vendor/font-awesome/css/font-awesome.min.css}">
 
 </head>
 <body>
@@ -31,9 +29,14 @@
     <h1><i class="fa fa-bar-chart"></i> Reports </h1>
   </div>
 
+
   <ul id="myTabs" class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">File</a></li>
-    <li role="presentation" class=""><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Database</a></li>
+    <li role="presentation" class="active">
+      <a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">
+        <i class="fa fa-file text-primary"></i> File</a></li>
+    <li role="presentation" class="">
+      <a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">
+        <i class="fa fa-database text-primary"></i> Database</a></li>
   </ul>
 
   <div id="myTabContent" class="tab-content">
@@ -177,18 +180,18 @@
     </div>
   </div>
 
-  <div class="modal-footer">
+  <div class="btn-toolbar">
     <button type="button" class="btn btn-embossed btn-success" th:onclick="@{'window.open(\'/ureport/designer\')'}">
       <i class="fa fa-plus"></i> Create New Report
     </button>
   </div>
+
 </div>
 
 <script src="../static/vendor/jquery/jquery.min.js"
         th:src="@{/vendor/jquery/jquery.min.js}"></script>
 <script src="../static/vendor/bootstrap/js/bootstrap.min.js"
         th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
-<!--<script src="../static/vendor/flat-ui/js/flat-ui.min.js"></script>-->
 <script src="../static/vendor/datatables.net/js/jquery.dataTables.min.js"
         th:src="@{/vendor/datatables.net/js/jquery.dataTables.min.js}"></script>
 <script src="../static/vendor/datatables.net-bs/js/dataTables.bootstrap.min.js"

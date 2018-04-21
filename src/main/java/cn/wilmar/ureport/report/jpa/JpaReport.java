@@ -21,7 +21,7 @@ import java.util.Date;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-class JpaReport {
+public class JpaReport {
 
     @Id @NonNull private String fileName;
 
