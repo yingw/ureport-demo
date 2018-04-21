@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-class User {
+public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
     @NonNull String username;
     @Enumerated(EnumType.STRING) Gender gender = Gender.randomGender();

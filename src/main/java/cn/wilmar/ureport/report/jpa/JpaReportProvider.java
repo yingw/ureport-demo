@@ -6,9 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.sql.Clob;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -16,17 +17,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 创建 by 殷国伟 于 2017/11/9.
- *
- * @author yingu
+ * @author yinguowei 2017/11/9
  */
-//@Configuration
 public class JpaReportProvider implements ReportProvider {
     private static final String PREFIX = "database:";
-    private static final String SUFFIX = ".ureport.xml";
     private static Logger logger = LoggerFactory.getLogger(JpaReportProvider.class);
     @Autowired
-    JpaReportRepository reportRepository;
+    private JpaReportRepository reportRepository;
 
     @Override
     public InputStream loadReport(String file) {
@@ -34,11 +31,8 @@ public class JpaReportProvider implements ReportProvider {
             file = file.substring(PREFIX.length(), file.length());
         }
         logger.info("加载报表：" + file);
-        // BUG, TODO get File name 带上我们自定义参数，找不到，临时解决方案：.ureport.xml后面全部截掉
-//        file = file.substring(0, file.indexOf(".ureport.xml") + 12);
-//        System.out.println("file = " + file);
-//        Clob fileContent = reportRepository.findByFileName(file).getFileContent();
-//        String fileStr = clobToString(fileContent);
+        // TODO		file=ReportUtils.decodeFileName(file);
+        // TODO get File name 带上我们自定义参数，找不到，临时解决方案：.ureport.xml后面全部截掉
         JpaReport report = reportRepository.findByFileName(file);
         if (report == null) {
             throw new RuntimeException("找不到报表：" + file);
@@ -57,9 +51,8 @@ public class JpaReportProvider implements ReportProvider {
 
     @Override
     public void deleteReport(String s) {
-//        logger.error("不支持在设计器中删除数据库报表，请到管理控制台删除！");
-//        throw new RuntimeException("不支持在设计器中删除数据库报表，请到管理控制台删除！");
-        if (s.startsWith("database:")) {
+        // TODO cache
+        if (s.startsWith(PREFIX)) {
             s = s.substring(9);
         }
         reportRepository.deleteById(s);
@@ -81,17 +74,6 @@ public class JpaReportProvider implements ReportProvider {
                 .collect(Collectors.toList());
     }
 
-
-    private String transferFileNameToReportName(String fileName) {
-        if (fileName.startsWith(PREFIX)) {
-            fileName = fileName.substring(PREFIX.length());
-        }
-        if (fileName.toLowerCase().endsWith(SUFFIX)) {
-            fileName = fileName.substring(0, fileName.length() - SUFFIX.length());
-        }
-        return fileName;
-    }
-
     @Override
     public void saveReport(String fileName, String content) {
         logger.info("保存报表：{}，内容：\n{}", fileName, content);
@@ -102,25 +84,12 @@ public class JpaReportProvider implements ReportProvider {
         if (report == null) {
             logger.info("没有找到报表：{}，新建报表！", fileName);
             report = new JpaReport(fileName);
-            // 初始化必填项 TODO
-//            report.setActivated(true);
-//            report.setName(transferFileNameToReportName(fileName));
         } else {
             logger.info("找到报表：{}，更新报表！", fileName);
         }
-//        report.setName(fileName);
-
-//        ByteArrayInputStream stream = new ByteArrayInputStream(content.getBytes());
-
-//        try {
-//            Clob clob = new SerialClob(content.toCharArray());
-//            report.setFileContent(clob);
         report.setFileContent(content);
         reportRepository.save(report);
         logger.info("保存成功！");
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
     }
 
     @Override
@@ -137,53 +106,5 @@ public class JpaReportProvider implements ReportProvider {
     public String getPrefix() {
         return PREFIX;
     }
-/*
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-
-    }
-*/
-
-    /**
-     * Clob类型转换成String类型
-     */
-    public String clobToString(final Clob clob) {
-
-        if (clob == null) {
-            return null;
-        }
-
-        Reader is = null;
-        try {
-            is = clob.getCharacterStream();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        BufferedReader br = new BufferedReader(is);
-
-        String str = null;
-        try {
-            str = br.readLine();    // 读取第一行
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        StringBuffer sb = new StringBuffer();
-        while (str != null) {    // 如果没有到达流的末尾，则继续读取下一行
-            sb.append(str);
-            try {
-                str = br.readLine();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        String returnString = sb.toString();
-
-        return returnString;
-        // 其他写法
-        // System.out.println("fileContent.getSubString(0, (int) fileContent.length()).toString() = " + fileContent.getSubString(1, (int) fileContent.length()));
-
-    }
 }

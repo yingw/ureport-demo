@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * @author Yin Guo Wei 2018/4/21.
  */
-enum Gender {
+public enum Gender {
     /**
      * Male
      */

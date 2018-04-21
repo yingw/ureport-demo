@@ -16,14 +16,3 @@ public class UreportDemoApplication {
         SpringApplication.run(UreportDemoApplication.class, args);
     }
 }
-/*
-@Configuration
-class MyAuditAware implements AuditorAware<String> {
-    private static final Optional<String> SYSTEM_ACCOUNT = Optional.of("SYSTEM");
-
-    @Override
-    public Optional<String> getCurrentAuditor() {
-        return SYSTEM_ACCOUNT;
-    }
-}*/
-

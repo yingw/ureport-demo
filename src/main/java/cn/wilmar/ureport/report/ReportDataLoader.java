@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
  * @author Yin Guo Wei 2018/4/21.
  */
 @Component
-class ReportDataLoader implements CommandLineRunner {
+public class ReportDataLoader implements CommandLineRunner {
     private final ReportService reportService;
 
     ReportDataLoader(ReportService reportService) {

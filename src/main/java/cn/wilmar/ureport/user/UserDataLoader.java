@@ -1,13 +1,15 @@
 package cn.wilmar.ureport.user;
 
-import cn.wilmar.ureport.report.ReportService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Stream;
 
+/**
+ * @author yinguowei
+ */
 @Component
-class UserDataLoader implements CommandLineRunner {
+public class UserDataLoader implements CommandLineRunner {
 
     private final UserRepository userRepository;
 
