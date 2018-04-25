@@ -27,18 +27,18 @@ public class JpaReportProvider implements ReportProvider {
 
     @Override
     public InputStream loadReport(String file) {
+        logger.debug("JpaReportProvider.loadReport, file = {}", file);
         if (file.startsWith(PREFIX)) {
             file = file.substring(PREFIX.length(), file.length());
         }
-        logger.info("加载报表：" + file);
         // TODO		file=ReportUtils.decodeFileName(file);
         // TODO get File name 带上我们自定义参数，找不到，临时解决方案：.ureport.xml后面全部截掉
         JpaReport report = reportRepository.findByFileName(file);
         if (report == null) {
-            throw new RuntimeException("找不到报表：" + file);
+            logger.error("Can't find report: {}", file);
+            throw new RuntimeException("Can't find report: " + file);
         }
         String fileStr = report.getFileContent();
-        logger.info("成功加载报表内容：\n" + fileStr);
         try {
             return new ByteArrayInputStream(
                     fileStr
@@ -60,9 +60,8 @@ public class JpaReportProvider implements ReportProvider {
 
     @Override
     public List<ReportFile> getReportFiles() {
-        logger.info("加载所有报表……");
+        logger.debug("JpaReportProvider.getReportFiles");
         List<JpaReport> reports = reportRepository.findAll();
-        logger.info("共加载到 {} 张报表", reports.size());
         // 数据库的 LastModifiedDate 应该是非空的，但是不能在 Entity 内设置 NotNull。建议不管。
         return reports.stream()
                 .map(report -> {
@@ -76,20 +75,19 @@ public class JpaReportProvider implements ReportProvider {
 
     @Override
     public void saveReport(String fileName, String content) {
-        logger.info("保存报表：{}，内容：\n{}", fileName, content);
+        logger.debug("JpaReportProvider.saveReport, fileName: {}", fileName);
         if (fileName.startsWith(PREFIX)) {
             fileName = fileName.substring(PREFIX.length());
         }
         JpaReport report = reportRepository.findByFileName(fileName);
         if (report == null) {
-            logger.info("没有找到报表：{}，新建报表！", fileName);
+            logger.debug("Haven't found report: {}, create NEW!", fileName);
             report = new JpaReport(fileName);
         } else {
-            logger.info("找到报表：{}，更新报表！", fileName);
+            logger.debug("Found report: {}, update!", fileName);
         }
         report.setFileContent(content);
         reportRepository.save(report);
-        logger.info("保存成功！");
     }
 
     @Override

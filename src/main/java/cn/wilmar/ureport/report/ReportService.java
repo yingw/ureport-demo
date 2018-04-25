@@ -49,14 +49,17 @@ public class ReportService {
 
 
     List<ReportFile> getReportFiles() {
+        logger.debug("ReportService.getReportFiles");
         return fileReportProvider.getReportFiles();
     }
 
     List<ReportFile> getDbReportFiles() {
+        logger.debug("ReportService.getDbReportFiles");
         return jpaReportProvider.getReportFiles();
     }
 
     void deleteReport(String file) {
+        logger.debug("ReportService.deleteReport, file: {}", file);
         if (file.startsWith(fileReportProvider.getPrefix())) {
             fileReportProvider.deleteReport(file);
         } else if (file.startsWith(jpaReportProvider.getPrefix())) {

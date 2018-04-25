@@ -26,6 +26,7 @@ public class ReportController {
 
     @GetMapping("/reports")
     public String getReports(Model model) {
+        logger.debug("ReportController.getReports");
         model.addAttribute("reports", reportService.getReportFiles());
         model.addAttribute("dbReports", reportService.getDbReportFiles());
         model.addAttribute("prefix", "file:");
