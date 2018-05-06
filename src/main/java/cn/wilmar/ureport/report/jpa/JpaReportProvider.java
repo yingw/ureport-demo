@@ -44,7 +44,7 @@ public class JpaReportProvider implements ReportProvider {
                     fileStr
                             .getBytes(StandardCharsets.UTF_8.name()));
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return null;
     }
