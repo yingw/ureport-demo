@@ -1,5 +1,7 @@
 # UReport Demo
 
+[![Build Status](https://travis-ci.org/yingw/ureport-demo.svg?branch=master)](https://travis-ci.org/yingw/ureport-demo)
+
 此项目是 [UReport](https://github.com/youseries/ureport/) 产品和 Spring Boot 整合后的一个实例
 
 - Spring Boot 集成
