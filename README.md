@@ -1,6 +1,7 @@
 # UReport Demo
 
 [![Build Status](https://travis-ci.org/yingw/ureport-demo.svg?branch=master)](https://travis-ci.org/yingw/ureport-demo)
+[![Apache 2.0](https://img.shields.io/github/license/micrometer-metrics/micrometer.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 此项目是 [UReport](https://github.com/youseries/ureport/) 产品和 Spring Boot 整合后的一个实例
 
