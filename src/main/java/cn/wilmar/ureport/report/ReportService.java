@@ -1,5 +1,6 @@
 package cn.wilmar.ureport.report;
 
+import cn.wilmar.ureport.report.cache.ErasableMemoryCache;
 import cn.wilmar.ureport.report.jpa.JpaReportProvider;
 import com.bstek.ureport.provider.report.ReportFile;
 import com.bstek.ureport.provider.report.file.FileReportProvider;
@@ -16,6 +17,8 @@ import java.util.List;
 @Service
 public class ReportService {
 
+    private final ErasableMemoryCache erasableMemoryCache;
+
     private final Logger logger = LoggerFactory.getLogger(ReportService.class);
     private final FileReportProvider fileReportProvider;
     private final JpaReportProvider jpaReportProvider;
@@ -28,7 +31,8 @@ public class ReportService {
     @Value("${spring.datasource.driver-class-name}")
     String driverClass;
 
-    ReportService(FileReportProvider fileReportProvider, JpaReportProvider jpaReportProvider) {
+    ReportService(ErasableMemoryCache erasableMemoryCache, FileReportProvider fileReportProvider, JpaReportProvider jpaReportProvider) {
+        this.erasableMemoryCache = erasableMemoryCache;
         this.fileReportProvider = fileReportProvider;
         this.jpaReportProvider = jpaReportProvider;
     }
@@ -66,6 +70,10 @@ public class ReportService {
             jpaReportProvider.deleteReport(file);
         } else {
             logger.error("ReportService.deleteReport, error when delete: {}", file);
+        }
+        // fix: delete report and cache.
+        if (erasableMemoryCache != null) {
+            erasableMemoryCache.clearCache();
         }
     }
 }
