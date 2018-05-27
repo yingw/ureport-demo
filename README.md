@@ -56,3 +56,8 @@ mvn package & cd target & java -jar ureport-demo-1.0.0.jar
 - 偶尔不 Preview 时直接导出没有图表，Preview 即可，原因未知
 
 其他问题请前往 https://github.com/yingw/ureport-demo/issues 提 issue，谢谢。
+
+## 版本历史
+
+- 2018-04-22 v1.0.0 初次版本
+- 2018-05-27 v1.0.1 更新 UReport 2.2.8，增加缓存同步功能 
