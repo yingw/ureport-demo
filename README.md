@@ -49,7 +49,7 @@ mvn package & cd target & java -jar ureport-demo-1.0.0.jar
 ## 问题
 
 已知问题：
-- UI 上删除数据库报表不会清楚缓存，可继续 Preview
+- UI 上删除数据库报表不会清除缓存，可继续 Preview
 - 部分 IE 浏览器 Preview 不可用，建议使用 Chrome
 - 偶尔不 Preview 时直接导出没有图表，Preview 即可，原因未知
 

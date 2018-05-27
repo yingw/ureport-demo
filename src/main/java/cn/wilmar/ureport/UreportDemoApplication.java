@@ -24,25 +24,13 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 public class UreportDemoApplication {
     Logger logger = LoggerFactory.getLogger(UreportDemoApplication.class);
 
-    @Bean HandlerExceptionResolver sentryExceptionResolver() {
-//        Sentry.init("");
-        return new SentryExceptionResolver();
-    }
-
-    @RequestMapping("/test")
-    @ResponseBody
-    String home() {
-        try {
-            int x = 1 / 0;
-        } catch (RuntimeException e) {
-            Sentry.capture(e);
-            logger.error(e.getMessage());
-            e.printStackTrace();
-        }
-        return "Hello World!";
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(UreportDemoApplication.class, args);
+    }
+
+    @Bean
+    HandlerExceptionResolver sentryExceptionResolver() {
+        // Sentry.init("");
+        return new SentryExceptionResolver();
     }
 }
