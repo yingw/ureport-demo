@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * 性别枚举
  * @author Yin Guo Wei 2018/4/21.
  */
 public enum Gender {

@@ -6,9 +6,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.stream.Stream;
 
 /**
+ * 默认的数据加载，初始化 User 数据
  * @author yinguowei
  */
 @Profile("dev")
@@ -24,10 +26,10 @@ public class UserDataLoader implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         logger.debug("UserDataLoader.run");
         Stream.of("Jojo", "Jon", "James", "Jack", "Jacky", "Jean", "Justin", "Judy", "Julia", "Jason", "Jane", "Joseph", "Jerry", "Jenny")
-                .forEach(name -> userRepository.save(new User(name, name.toLowerCase() + "@sample.com")));
+                .forEach(name -> userRepository.save(new User(name, name.toLowerCase() + "@sample.com", new Date())));
         userRepository.findAll().forEach(System.out::println);
     }
 }

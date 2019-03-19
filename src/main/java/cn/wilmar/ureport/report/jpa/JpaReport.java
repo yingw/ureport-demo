@@ -14,6 +14,7 @@ import java.time.Instant;
 import java.util.Date;
 
 /**
+ * 数据库存储报表对象
  * @author yinguowei 2017/11/9.
  */
 @Entity
@@ -28,6 +29,9 @@ public class JpaReport {
     @CreatedDate @Column(nullable = false)
     private Date createdDate;
 
+    /**
+     * 内容字段，里面是 xml 格式报表文本
+     */
     @NotNull @Lob private String fileContent;
 
     @LastModifiedDate @Column(nullable = false)
