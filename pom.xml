@@ -5,7 +5,7 @@
 
 	<groupId>cn.wilmar</groupId>
 	<artifactId>ureport-demo</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>ureport-demo</name>
@@ -25,7 +25,6 @@
 	</properties>
 
 	<dependencies>
-
 		<!-- Sentry -->
 		<dependency>
 			<groupId>io.sentry</groupId>
